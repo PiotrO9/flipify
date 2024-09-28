@@ -1,0 +1,42 @@
+:root {
+	/* stylelint-disable custom-property-empty-line-before */
+
+	--main-font: 'Roboto', sans-serif;
+	--second-font: 'Merriweather', sans-serif;
+
+	--color-primary: #6bcdfd;
+	--color-secondary: #f0f0f0;
+	--gray-300: #a3a3a3;
+
+	--background-color: #fff;
+	--background-color-negative: #000;
+
+	--color-succes: #11bc4a;
+	--color-error: #d21b1b;
+	--color-warning: #eea11b;
+
+	--text-color: #000;
+	--text-color-negative: #fff;
+
+	--button-primary-text: var(--color-primary);
+	--button-primary-background: #fff;
+	--button-primary-border: var(--color-primary);
+	--button-primary-text-hover: #fff;
+	--button-primary-background-hover: var(--color-primary);
+	--button-primary-border-hover: var(--color-primary);
+	--button-secondary-text: #000;
+	--button-secondary-background: #fff;
+	--button-secondary-border: #000;
+	--button-secondary-text-hover: #fff;
+	--button-secondary-background-hover: #000;
+	--button-secondary-border-hover: #000;
+
+	--link-color: var(--color-primary);
+	--link-color-hover: #1261eb;
+
+	--input-border: var(--color-primary);
+
+	--border-radius: 12px;
+
+	/* stylelint-enable custom-property-empty-line-before */
+}
