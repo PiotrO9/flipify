@@ -1,10 +1,10 @@
 <script setup lang="ts">
-
 interface baseInputPropsModel {
     type: InputType
     name?: string
     placeholder?: string
     iconName?: string
+    modelValue?: string // Add modelValue prop to handle v-model
 }
 
 type InputType =
@@ -31,13 +31,21 @@ type InputType =
     | 'url'
     | 'week'
 
+const { type, name, placeholder, iconName, modelValue } = defineProps<baseInputPropsModel>();
 
-const { type, name, iconName } = defineProps<baseInputPropsModel>();
+const emit = defineEmits(['update:modelValue']); // Define emit for v-model
+
+// Function to emit the value change
+const onInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    emit('update:modelValue', target.value);
+};
 </script>
 
 <template>
     <div class="input-wrapper">
-        <input :type="type" class="input" :name="name" :placeholder="placeholder" />
+        <input :type="type" class="input" :name="name" :placeholder="placeholder" :value="modelValue"
+            @input="onInput" />
         <Icon v-if="iconName" :name="iconName" class="icon" />
     </div>
 </template>

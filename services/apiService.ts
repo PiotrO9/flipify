@@ -1,4 +1,6 @@
 import { HttpMethod } from '~/types/enums/httpMethodsTypes'
+import { useNotificationStore } from '~/stores/notificationStore'
+import { NotificationTypes } from '~/types/enums/notificationTypes'
 
 interface ApiResponse<T> {
 	success: boolean
@@ -7,10 +9,16 @@ interface ApiResponse<T> {
 	statusCode: number
 }
 
-class ApiService {
+export class ApiService {
 	private api
 
-	constructor(baseURL: string = '') {
+	private notificationStore
+
+	constructor(
+		notificationStore: ReturnType<typeof useNotificationStore>,
+		baseURL: string = '',
+	) {
+		this.notificationStore = notificationStore
 		this.api = $fetch.create({
 			baseURL: baseURL,
 			headers: {
@@ -25,25 +33,31 @@ class ApiService {
 		data?: any,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T> {
+	): Promise<T | null> {
 		try {
 			let config = { method, body: data, ...options }
 			if (interceptor) {
 				config = interceptor(config)
 			}
 
-			const response: ApiResponse<T> = await this.api(url, config)
+			const response: ApiResponse<T> = await this.api<ApiResponse<T>>(
+				url,
+				config,
+			)
 
 			if (response.success) {
 				return response.data
 			} else {
-				throw new Error(
-					response.message || 'An unknown error occurred.',
-				)
+				this.notificationStore.setNotification({
+					title: 'Error',
+					description: response.message,
+					type: NotificationTypes.ALERT,
+				})
+				return response.data
 			}
 		} catch (error: any) {
 			this.handleError(error)
-			throw error
+			return error.data
 		}
 	}
 
@@ -51,7 +65,7 @@ class ApiService {
 		url: string,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T> {
+	): Promise<T | null> {
 		return this.request<T>(
 			HttpMethod.GET,
 			url,
@@ -66,7 +80,7 @@ class ApiService {
 		data: any,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T> {
+	): Promise<T | null> {
 		return this.request<T>(HttpMethod.POST, url, data, options, interceptor)
 	}
 
@@ -75,7 +89,7 @@ class ApiService {
 		data: any,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T> {
+	): Promise<T | null> {
 		return this.request<T>(HttpMethod.PUT, url, data, options, interceptor)
 	}
 
@@ -83,7 +97,7 @@ class ApiService {
 		url: string,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T> {
+	): Promise<T | null> {
 		return this.request<T>(
 			HttpMethod.DELETE,
 			url,
@@ -94,12 +108,12 @@ class ApiService {
 	}
 
 	private handleError(error: any): void {
-		if (error?.data?.message) {
-			console.error('API Error Message:', error.data.message)
-		} else {
-			console.error('API Error:', error)
-		}
+		const description = error?.data?.message ? error?.data?.message : error
+
+		this.notificationStore.setNotification({
+			title: 'Error',
+			description: description,
+			type: NotificationTypes.ALERT,
+		})
 	}
 }
-
-export const apiService = new ApiService('https://api.example.com')

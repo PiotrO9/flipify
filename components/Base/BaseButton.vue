@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import { NotificationTypes } from '@/types/enums/notificationTypes';
-import { baseButtonTypes, controlSizes } from '../../types/prop-models/enums/base-button-types';
-import { useNotificationStore } from '@/stores/notificationStore';
+import { baseButtonTypes } from '../../types/prop-models/enums/base-button-types';
 
 interface baseButtonPropsModel {
     label: string;
     buttonType: baseButtonTypes;
     isLoading?: boolean;
     isDisable?: boolean;
-    onClickFunction?: Function;
+    onClickFunction?: (event?: MouseEvent) => void;
 }
-
-const notificationStore = useNotificationStore();
 
 const styles = computed(() => {
     const classNames: string[] = [];
@@ -26,11 +22,9 @@ const styles = computed(() => {
 const props = withDefaults(defineProps<baseButtonPropsModel>(), { isLoading: false, isDisable: false });
 
 function handleButtonClick() {
-    notificationStore.setNotification({
-        title: "Test notification",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut",
-        type: NotificationTypes.ALERT,
-    })
+    if (props.onClickFunction) {
+        props.onClickFunction();
+    }
 }
 </script>
 
