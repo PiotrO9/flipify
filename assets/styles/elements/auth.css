@@ -1,0 +1,49 @@
+.auth-card {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 30px;
+	padding: 30px;
+	background-color: var(--background-color);
+	border-radius: var(--border-radius);
+	box-shadow: 0 8px 32px rgb(0 0 0 / 12%);
+
+	@media (width >= 640px) {
+		max-width: 600px;
+		height: max-content;
+		margin: 0 20px;
+	}
+
+	.auth-card-title {
+		font-size: 32rem;
+		text-align: center;
+	}
+
+	.auth-extra-option-wrapper {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 5px;
+		width: 100%;
+
+		.auth-extra-option-wrapper-prompt {
+			font-size: 14rem;
+		}
+
+		.auth-extra-option-wrapper-link {
+			font-weight: 600;
+		}
+	}
+
+	.forgot-password-wrapper {
+		justify-content: flex-start;
+	}
+
+	.register-prompt-wrapper,
+	.login-prompt-wrapper {
+		justify-content: flex-end;
+	}
+}

@@ -1,4 +1,4 @@
 <template>
-    <h1>homepage layout</h1>
+    <AppHeader />
     <slot />
 </template>

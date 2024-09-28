@@ -5,6 +5,9 @@ body,
 #__nuxt {
 	width: 100%;
 	min-height: 100dvh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 html {
@@ -14,10 +17,17 @@ html {
 	}
 }
 
+body {
+	background-color: var(--color-secondary);
+	font-family: var(--main-font);
+}
+
 a {
 	color: var(--link-color);
 	cursor: pointer;
+	font-weight: 500;
 	transition: color 0.3s ease;
+	font-size: 16rem;
 
 	&:hover {
 		color: var(--link-color-hover);
@@ -31,4 +41,8 @@ a {
 ul,
 ol {
 	list-style-type: none;
+}
+
+.container {
+	max-width: 1600px;
 }

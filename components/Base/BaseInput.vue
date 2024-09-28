@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 interface baseInputPropsModel {
-    label: string
     type: InputType
     name?: string
-    borderColor?: string
+    placeholder?: string
+    iconName?: string
 }
 
 type InputType =
@@ -32,46 +32,46 @@ type InputType =
     | 'week'
 
 
-const props = defineProps<baseInputPropsModel>();
+const { type, name, iconName } = defineProps<baseInputPropsModel>();
 </script>
 
 <template>
     <div class="input-wrapper">
-        <label :for="props.name" class="label">
-            {{ props.label }}
-        </label>
-        <input :type="props.type" class="input" :name="props.name" :style="{ borderColor: props.borderColor }">
+        <input :type="type" class="input" :name="name" :placeholder="placeholder" />
+        <Icon v-if="iconName" :name="iconName" class="icon" />
     </div>
 </template>
 
 <style scoped>
 .input-wrapper {
-    max-width: 320px;
     width: 100%;
     display: flex;
-    flex-direction: column;
+    height: 55px;
     position: relative;
+    padding: 10px;
+    border: 1px solid var(--input-border);
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
 
-    label {
-        position: absolute;
-        bottom: 13px;
-        left: 15px;
-        transition: transform 0.3s;
-        background-color: var(--background-color);
-        padding: 2px 5px;
+    .input {
+        width: 100%;
+        outline: none;
+        border: none;
         font-size: 16rem;
+        background-color: inherit;
 
-        &:has(+ input:focus) {
-            transform: translateY(-20px);
+        &::placeholder {
+            font-size: 16rem;
         }
     }
 
-    .input {
-        height: 45px;
-        margin-top: 20px;
-        padding: 10px;
-        border: 2px solid var(--input-border);
-        border-radius: var(--border-radius);
+    .icon {
+        width: 28px;
+        height: 28px;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        translate: 0 -50%;
     }
 }
 </style>
