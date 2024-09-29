@@ -2,7 +2,7 @@ import { HttpMethod } from '~/types/enums/httpMethodsTypes'
 import { useNotificationStore } from '~/stores/notificationStore'
 import { NotificationTypes } from '~/types/enums/notificationTypes'
 
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
 	success: boolean
 	message: string
 	data: T
@@ -13,11 +13,8 @@ export class ApiService {
 	private api
 	private notificationStore
 
-	constructor(
-		notificationStore: ReturnType<typeof useNotificationStore>,
-		baseURL: string = '',
-	) {
-		this.notificationStore = notificationStore
+	constructor(baseURL: string = '') {
+		this.notificationStore = useNotificationStore()
 		this.api = $fetch.create({
 			baseURL: baseURL,
 			headers: {
@@ -26,30 +23,44 @@ export class ApiService {
 			onResponseError: (context) => {
 				const { response } = context
 				if (response.status >= 400 && response.status < 600) {
-					const errorData = response._data
+					if (response._data) {
+						const errorData = response._data
 
-					let errorsCommunicates: string[] = []
+						if (errorData.errors) {
+							let errorsCommunicates: string[] = []
 
-					if (errorData.errors) {
-						Object.keys(errorData.errors).forEach((errorKey) => {
-							const errorValues = errorData.errors[errorKey]
+							Object.keys(errorData.errors).forEach(
+								(errorKey) => {
+									const errorValues =
+										errorData.errors[errorKey]
 
-							if (
-								Array.isArray(errorValues) &&
-								errorValues.length
-							) {
-								errorValues.forEach((errorValue) => {
-									errorsCommunicates.push(errorValue)
+									if (
+										Array.isArray(errorValues) &&
+										errorValues.length
+									) {
+										errorValues.forEach((errorValue) => {
+											errorsCommunicates.push(errorValue)
+										})
+									}
+								},
+							)
+
+							this.notificationStore.setNotification({
+								title: errorData.title,
+								description: errorsCommunicates.join('. '),
+								type: NotificationTypes.ALERT,
+							})
+						} else {
+							if (!errorData.data) {
+								this.notificationStore.setNotification({
+									title: errorData.message,
+									description: '',
+									type: NotificationTypes.ALERT,
 								})
+								return
 							}
-						})
+						}
 					}
-
-					this.notificationStore.setNotification({
-						title: errorData.title,
-						description: errorsCommunicates.join('. '),
-						type: NotificationTypes.ALERT,
-					})
 				}
 			},
 		})
@@ -61,7 +72,7 @@ export class ApiService {
 		data?: any,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T | null> {
+	): Promise<ApiResponse<T> | null> {
 		try {
 			let config = { method, body: data, ...options }
 			if (interceptor) {
@@ -71,7 +82,7 @@ export class ApiService {
 			const response = await this.api<ApiResponse<T>>(url, config)
 
 			if (response.success) {
-				return response.data
+				return response
 			}
 			return null
 		} catch (error) {
@@ -83,7 +94,7 @@ export class ApiService {
 		url: string,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T | null> {
+	): Promise<ApiResponse<T> | null> {
 		return this.request<T>(
 			HttpMethod.GET,
 			url,
@@ -98,7 +109,7 @@ export class ApiService {
 		data: any,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T | null> {
+	): Promise<ApiResponse<T> | null> {
 		return this.request<T>(HttpMethod.POST, url, data, options, interceptor)
 	}
 
@@ -107,7 +118,7 @@ export class ApiService {
 		data: any,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T | null> {
+	): Promise<ApiResponse<T> | null> {
 		return this.request<T>(HttpMethod.PUT, url, data, options, interceptor)
 	}
 
@@ -115,7 +126,7 @@ export class ApiService {
 		url: string,
 		options: any = {},
 		interceptor?: (config: any) => any,
-	): Promise<T | null> {
+	): Promise<ApiResponse<T> | null> {
 		return this.request<T>(
 			HttpMethod.DELETE,
 			url,

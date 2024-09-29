@@ -1,15 +1,14 @@
 <script setup lang='ts'>
 import { baseButtonTypes } from '~/types/prop-models/enums/base-button-types';
-import { useNotificationStore } from '@/stores/notificationStore';
 import { ApiService } from '~/services/apiService';
 import { authService } from '~/services/authService';
+
 definePageMeta({
     colorMode: 'light',
     layout: 'auth'
 })
 
 const apiService = new ApiService(
-    useNotificationStore(),
     'https://localhost:7191/api',
 )
 
@@ -17,14 +16,13 @@ const email = ref('');
 const password = ref('');
 
 function handleLoginButtonSubmitClick() {
-    apiService.post('/auth/login', {
+    apiService.post<{ token: string }>('/auth/login', {
         "username": email.value,
         "password": password.value
     })
-        .then((res: any) => {
-            if (res?.token) {
-                authService.setToken(res.token)
-
+        .then((res) => {
+            if (res?.data.token) {
+                authService.setToken(res.data.token)
                 navigateTo('flipcards')
             }
         })
@@ -38,7 +36,7 @@ function handleLoginButtonSubmitClick() {
                 Login
             </h1>
         </div>
-        <BaseInput type="email" placeholder="E-mail" icon-name="uil:user" v-model="email" />
+        <BaseInput type="text" placeholder="Username" icon-name="uil:user" v-model="email" />
         <BaseInput type="password" placeholder="Password" icon-name="mdi:password-outline" v-model="password" />
         <div class="forgot-password-wrapper auth-extra-option-wrapper">
             <span class="auth-extra-option-wrapper-prompt">
