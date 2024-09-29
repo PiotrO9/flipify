@@ -140,7 +140,7 @@ function handleCloseButtonClick(event: Event) {
             font-weight: 500;
 
             @media (width >=640px) {
-                font-size: 48rem;
+                font-size: 36rem;
             }
         }
     }

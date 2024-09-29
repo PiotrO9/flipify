@@ -11,7 +11,6 @@ interface ApiResponse<T> {
 
 export class ApiService {
 	private api
-
 	private notificationStore
 
 	constructor(
@@ -23,6 +22,35 @@ export class ApiService {
 			baseURL: baseURL,
 			headers: {
 				'Content-Type': 'application/json',
+			},
+			onResponseError: (context) => {
+				const { response } = context
+				if (response.status >= 400 && response.status < 600) {
+					const errorData = response._data
+
+					let errorsCommunicates: string[] = []
+
+					if (errorData.errors) {
+						Object.keys(errorData.errors).forEach((errorKey) => {
+							const errorValues = errorData.errors[errorKey]
+
+							if (
+								Array.isArray(errorValues) &&
+								errorValues.length
+							) {
+								errorValues.forEach((errorValue) => {
+									errorsCommunicates.push(errorValue)
+								})
+							}
+						})
+					}
+
+					this.notificationStore.setNotification({
+						title: errorData.title,
+						description: errorsCommunicates.join('. '),
+						type: NotificationTypes.ALERT,
+					})
+				}
 			},
 		})
 	}
@@ -40,24 +68,14 @@ export class ApiService {
 				config = interceptor(config)
 			}
 
-			const response: ApiResponse<T> = await this.api<ApiResponse<T>>(
-				url,
-				config,
-			)
+			const response = await this.api<ApiResponse<T>>(url, config)
 
 			if (response.success) {
 				return response.data
-			} else {
-				this.notificationStore.setNotification({
-					title: 'Error',
-					description: response.message,
-					type: NotificationTypes.ALERT,
-				})
-				return response.data
 			}
-		} catch (error: any) {
-			this.handleError(error)
-			return error.data
+			return null
+		} catch (error) {
+			return null
 		}
 	}
 
@@ -105,15 +123,5 @@ export class ApiService {
 			options,
 			interceptor,
 		)
-	}
-
-	private handleError(error: any): void {
-		const description = error?.data?.message ? error?.data?.message : error
-
-		this.notificationStore.setNotification({
-			title: 'Error',
-			description: description,
-			type: NotificationTypes.ALERT,
-		})
 	}
 }
