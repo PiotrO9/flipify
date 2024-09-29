@@ -4,7 +4,7 @@ interface StorageOptions {
 	expiresIn?: number
 }
 
-class StorageService {
+export class StorageService {
 	private storage: Storage
 
 	constructor(type: StorageType = 'localStorage') {

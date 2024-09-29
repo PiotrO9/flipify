@@ -12,4 +12,5 @@ export default defineNuxtConfig({
 			stylistic: true,
 		},
 	},
+	ssr: false,
 })

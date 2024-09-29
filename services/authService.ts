@@ -1,28 +1,29 @@
-import {
-	localStorageService,
-	sessionStorageService,
-} from '~/services/storageService'
+import { cookieService } from '~/services/cookieService'
 
 class AuthService {
 	private tokenKey = 'authToken'
-	private storageType: 'localStorage' | 'sessionStorage' = 'localStorage'
-	private storageService =
-		this.storageType === 'localStorage'
-			? localStorageService
-			: sessionStorageService
+	private cookieNamespace = 'auth'
 
 	setToken(token: string): void {
-		this.storageService.set(this.tokenKey, token, {
-			expiresIn: 60 * 60 * 24,
-		})
+		cookieService.set(
+			this.tokenKey,
+			token,
+			{
+				expiresIn: 60 * 60 * 24,
+				path: '/',
+				secure: process.env.NODE_ENV === 'production',
+				sameSite: 'Strict',
+			},
+			this.cookieNamespace,
+		)
 	}
 
 	getToken(): string | null {
-		return this.storageService.get<string>(this.tokenKey)
+		return cookieService.get(this.tokenKey, this.cookieNamespace)
 	}
 
 	clearToken(): void {
-		this.storageService.remove(this.tokenKey)
+		cookieService.remove(this.tokenKey, this.cookieNamespace)
 	}
 
 	isAuthenticated(): boolean {

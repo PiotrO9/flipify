@@ -2,8 +2,7 @@
 import { baseButtonTypes } from '~/types/prop-models/enums/base-button-types';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { ApiService } from '~/services/apiService';
-import { sessionStorageService } from '~/services/storageService';
-
+import { authService } from '~/services/authService';
 definePageMeta({
     colorMode: 'light',
     layout: 'auth'
@@ -13,7 +12,6 @@ const apiService = new ApiService(
     useNotificationStore(),
     'https://localhost:7191/api',
 )
-
 
 const email = ref('');
 const password = ref('');
@@ -25,7 +23,7 @@ function handleLoginButtonSubmitClick() {
     })
         .then((res: any) => {
             if (res?.token) {
-                sessionStorageService.set('jwt-token', res.token)
+                authService.setToken(res.token)
 
                 navigateTo('flipcards')
             }

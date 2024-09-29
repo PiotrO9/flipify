@@ -11,5 +11,8 @@ definePageMeta({
         <NuxtLink to="login">
             login
         </NuxtLink>
+        <NuxtLink to="flipcards">
+            flipcards
+        </NuxtLink>
     </div>
 </template>

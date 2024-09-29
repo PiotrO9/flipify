@@ -4,9 +4,9 @@
 
 <template>
     <header class="header">
-        <span class="header-app-name">
+        <NuxtLink class="header-app-name" to="/">
             Flipify
-        </span>
+        </NuxtLink>
     </header>
 </template>
 
