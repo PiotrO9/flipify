@@ -25,7 +25,7 @@
 
     .header-app-name {
         font-weight: 500;
-        font-size: 24rem;
+        font-size: 2.5rem;
     }
 }
 </style>

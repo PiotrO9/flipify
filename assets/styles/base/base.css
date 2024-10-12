@@ -28,7 +28,7 @@ a {
 	cursor: pointer;
 	font-weight: 500;
 	transition: color 0.3s ease;
-	font-size: 16rem;
+	font-size: 1rem;
 
 	&:hover {
 		color: var(--link-color-hover);

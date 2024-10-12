@@ -136,11 +136,11 @@ function handleCloseButtonClick(event: Event) {
         align-items: center;
 
         .notification-title {
-            font-size: 24rem;
+            font-size: 1.5rem;
             font-weight: 500;
 
             @media (width >=640px) {
-                font-size: 36rem;
+                font-size: 2rem;
             }
         }
     }
@@ -172,7 +172,7 @@ function handleCloseButtonClick(event: Event) {
 
     .notification-container-content {
         .notification-description {
-            font-size: 16rem;
+            font-size: 1rem;
         }
     }
 }

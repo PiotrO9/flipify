@@ -98,10 +98,6 @@ section {
 	display: block;
 }
 
-html {
-	font-size: 6.25%;
-}
-
 body {
 	font-family: var(--main-font);
 	line-height: 1.2;

@@ -1,6 +1,5 @@
 <script setup lang='ts'>
 import { baseButtonTypes } from '~/types/prop-models/enums/base-button-types';
-import { ApiService, type ApiResponse } from '~/services/apiService';
 import { useNotificationStore } from '~/stores/notificationStore';
 import { NotificationTypes } from '~/types/enums/notificationTypes';
 
@@ -9,35 +8,70 @@ definePageMeta({
     layout: 'auth'
 })
 
+const runtimeConfig = useRuntimeConfig();
+const notificationStore = useNotificationStore()
+
 const username = ref('');
 const email = ref('');
 const password = ref('');
 
-const apiService = new ApiService(
-    'https://localhost:7191/api',
-)
+async function handleRegisterButtonSubmitClick() {
+    const endpoint = `${runtimeConfig.public.API_BASE_URL}/auth/register`;
 
-function handleRegisterButtonSubmitClick() {
-    apiService.post<string>('/auth/register', {
-        "username": username.value,
-        "email": email.value,
-        "password": password.value
-    })
-        .then((res) => {
-            if (res) {
-                const notificationStore = useNotificationStore()
+    const { data } = await useFetch(endpoint, {
+        method: 'post',
+        body: {
+            username: username.value,
+            password: password.value,
+            email: email.value,
+        },
+        onResponseError({ response }) {
+            if (response) {
+                if (response.status === 400) {
+                    if (response._data.errors) {
+                        const errors = response._data.errors;
 
-                notificationStore.setNotification({
-                    title: res.message,
-                    description: res.data,
-                    type: NotificationTypes.CORRECT
-                })
+                        const errorReasons = Object.keys(errors).map((error) => {
+                            if (errors[error].length) {
+                                return errors[error][0]
+                            }
+                        })
 
-                username.value = '';
-                email.value = '';
-                password.value = '';
+                        const description = errorReasons.join(". ");
+
+                        notificationStore.setNotification({
+                            title: `Validation ${errorReasons.length > 1 ? 'errors' : 'error'}`,
+                            description: description,
+                            type: NotificationTypes.ALERT
+                        })
+                    }
+
+                    if (response._data.error) {
+                        notificationStore.setNotification({
+                            title: 'User already exist',
+                            description: 'There is existing user with that credentials',
+                            type: NotificationTypes.ALERT
+                        })
+                    }
+                }
             }
+            else {
+                notificationStore.setNotification({
+                    title: `Error`,
+                    description: "Network or unknown error occurred",
+                    type: NotificationTypes.ALERT
+                })
+            }
+        }
+    })
+
+    if (data.value) {
+        notificationStore.setNotification({
+            title: `User created successfully`,
+            description: "Please verify your email",
+            type: NotificationTypes.CORRECT
         })
+    }
 }
 </script>
 

@@ -1,14 +1,13 @@
 <script setup lang='ts'>
-import { authService } from '~/services/authService';
 definePageMeta({
     layout: 'default',
     colorMode: 'light',
-    middleware: 'auth'
 })
 
 function handleLogoutButtonClick() {
-    authService.clearToken()
-    navigateTo('/')
+    // TODO
+    // authService.clearToken()
+    // navigateTo('/')
 }
 </script>
 

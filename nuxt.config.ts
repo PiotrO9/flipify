@@ -12,5 +12,9 @@ export default defineNuxtConfig({
 			stylistic: true,
 		},
 	},
-	ssr: false,
+	runtimeConfig: {
+		public: {
+			API_BASE_URL: process.env.BACKEND_SERVER_ADRES,
+		},
+	},
 })

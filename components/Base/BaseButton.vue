@@ -69,7 +69,7 @@ function handleButtonClick() {
         text-align: center;
         color: inherit;
         font-weight: 700;
-        font-size: 16rem;
+        font-size: 1rem;
         letter-spacing: .5px;
     }
 }

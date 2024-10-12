@@ -65,11 +65,11 @@ const onInput = (event: Event) => {
         width: 100%;
         outline: none;
         border: none;
-        font-size: 16rem;
+        font-size: 1rem;
         background-color: inherit;
 
         &::placeholder {
-            font-size: 16rem;
+            font-size: 1rem;
         }
     }
 
