@@ -5,10 +5,9 @@ import { NotificationTypes } from '~/types/enums/notificationTypes';
 
 definePageMeta({
     colorMode: 'light',
-    layout: 'auth'
+    layout: 'auth',
+    middleware: 'login'
 })
-
-const runtimeConfig = useRuntimeConfig();
 
 const username = ref('');
 const password = ref('');
@@ -16,58 +15,46 @@ const password = ref('');
 const notificationStore = useNotificationStore()
 
 async function handleLoginButtonSubmitClick() {
-    const endpoint = `${runtimeConfig.public.API_BASE_URL}/auth/login`;
-
-    const { data, error } = await useFetch<{ token: string }>(endpoint, {
+    await useFetch("/api/auth/login", {
         method: 'post',
         body: {
             username: username.value,
             password: password.value,
-        },
-        onResponseError({ response }) {
-            if (response) {
-                switch (response.status) {
-                    case 400: {
-                        notificationStore.setNotification({
-                            title: `No credentials`,
-                            description: "You must to fill credentials",
-                            type: NotificationTypes.ALERT
-                        })
-                    }
-                    case 401: {
-                        if (response._data.error) {
-                            notificationStore.setNotification({
-                                title: `Verify you e-mail`,
-                                description: "Check your mail and verify your account",
-                                type: NotificationTypes.ALERT
-                            })
-                        }
-                        else {
-                            notificationStore.setNotification({
-                                title: `Wrong credentials`,
-                                description: "Username or password are wrong",
-                                type: NotificationTypes.ALERT
-                            })
-                        }
-                    }
+        }
+    }).then((res) => {
+        if (res.error.value) {
+            switch (res.error.value.statusCode) {
+                case 400: {
+                    notificationStore.setNotification({
+                        title: `No credentials`,
+                        description: "You must to fill credentials",
+                        type: NotificationTypes.ALERT
+                    })
+                    break;
                 }
-            } else {
-                notificationStore.setNotification({
-                    title: `Error`,
-                    description: "Network or unknown error occurred",
-                    type: NotificationTypes.ALERT
-                })
+                case 401: {
+                    notificationStore.setNotification({
+                        title: res.error.value.data.statusMessage,
+                        description: res.error.value.data.data.errors,
+                        type: NotificationTypes.ALERT
+                    })
+                    break;
+                }
+                default: {
+                    notificationStore.setNotification({
+                        title: res.error.value.data.statusMessage,
+                        description: res.error.value.data.data.errors,
+                        type: NotificationTypes.ALERT
+                    })
+                    break;
+                }
+
             }
-        },
-    });
-
-    if (data.value) {
-        // TODO
-        // Handle token
-
-        // authService.setToken(data.value.token)
-        // navigateTo('flipcards')
-    }
+        }
+        else {
+            navigateTo("/flipcards");
+        }
+    })
 }
 </script>
 

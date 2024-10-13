@@ -2,12 +2,15 @@
 definePageMeta({
     layout: 'default',
     colorMode: 'light',
+    middleware: 'auth'
 })
 
-function handleLogoutButtonClick() {
-    // TODO
-    // authService.clearToken()
-    // navigateTo('/')
+async function handleLogoutButtonClick() {
+    await useFetch("/api/auth/logout", {
+        method: 'POST'
+    }).then(() => {
+        navigateTo("/")
+    });
 }
 </script>
 
