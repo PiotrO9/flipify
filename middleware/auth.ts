@@ -9,6 +9,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			})
 		} catch (error) {
 			const fetchError = error as FetchError
+
 			if (fetchError.statusCode == 401) {
 				return navigateTo('/login')
 			}

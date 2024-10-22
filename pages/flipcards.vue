@@ -6,17 +6,24 @@ definePageMeta({
 })
 
 async function handleLogoutButtonClick() {
-    await useFetch("/api/auth/logout", {
+    await $fetch("/api/auth/logout", {
         method: 'POST'
-    }).then(() => {
+    }).finally(() => {
         navigateTo("/")
     });
+}
+
+async function getFlipcardSets() {
+    // await $fetch("/api/")
 }
 </script>
 
 <template>
     <div>
-        <h1>flipcards</h1>
+        <h1>
+            flipcards
+        </h1>
+
         <button @click="handleLogoutButtonClick">
             logout
         </button>

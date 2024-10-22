@@ -30,8 +30,6 @@ export default defineEventHandler(async (event) => {
 			},
 		)
 
-		deleteCookie(event, 'accessToken')
-
 		return { message: 'Logout successful' }
 	} catch (error) {
 		if (axios.isAxiosError(error) && error.response) {
@@ -41,12 +39,13 @@ export default defineEventHandler(async (event) => {
 				data: { error: 'An error occurred during logout.' },
 			})
 		} else {
-			console.log()
 			throw createError({
 				statusCode: 500,
 				statusMessage: 'Network error',
 				data: { error: 'Network or unknown error occurred.' },
 			})
 		}
+	} finally {
+		deleteCookie(event, 'accessToken')
 	}
 })
