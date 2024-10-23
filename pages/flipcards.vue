@@ -1,21 +1,23 @@
 <script setup lang='ts'>
+import type flipcardSetModel from '~/types/flipcard-sets';
+
 definePageMeta({
     layout: 'default',
     colorMode: 'light',
     middleware: 'auth'
 })
 
-async function handleLogoutButtonClick() {
-    await $fetch("/api/auth/logout", {
-        method: 'POST'
-    }).finally(() => {
-        navigateTo("/")
-    });
-}
+const flipcardsSets = ref<flipcardSetModel[]>(await useFetch("/api/flipcards/sets").data.value)
 
-async function getFlipcardSets() {
-    // await $fetch("/api/")
-}
+console.log(flipcardsSets.value);
+
+// async function handleLogoutButtonClick() {
+//     await $fetch("/api/auth/logout", {
+//         method: 'POST'
+//     }).finally(() => {
+//         navigateTo("/")
+//     });
+// }
 </script>
 
 <template>
@@ -23,9 +25,6 @@ async function getFlipcardSets() {
         <h1>
             flipcards
         </h1>
-
-        <button @click="handleLogoutButtonClick">
-            logout
-        </button>
+        <FlipcardSetPreviewCard v-for="(flipcardSet, index) in flipcardsSets" :key="index" />
     </div>
 </template>

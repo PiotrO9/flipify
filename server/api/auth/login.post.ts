@@ -41,7 +41,6 @@ export default defineEventHandler(async (event) => {
 
 		return { message: 'Login successful' }
 	} catch (error) {
-		// Obsługa błędów
 		if (axios.isAxiosError(error) && error.response) {
 			switch (error.response.status) {
 				case 400:

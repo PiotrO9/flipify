@@ -1,7 +1,7 @@
 import type { FetchError } from 'ofetch'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-	if (to.path != from.path) {
+	if (process.client) {
 		try {
 			await $fetch('/api/auth/validate-token', {
 				method: 'get',

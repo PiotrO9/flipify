@@ -1,6 +1,7 @@
 import { defineEventHandler, getCookie } from 'h3'
+import type { FetchError } from 'ofetch'
+import { axiosInstance } from '~/utils/axios'
 import axios from 'axios'
-import https from 'https'
 
 export default defineEventHandler(async (event) => {
 	const endpoint = `${process.env.BACKEND_SERVER_ADRES}/flipcards/my-sets`
@@ -9,26 +10,30 @@ export default defineEventHandler(async (event) => {
 	if (!accessToken) {
 		throw createError({
 			statusCode: 401,
-			statusMessage: 'Token expired',
-			data: { error: 'An error occurred during logout.' },
+			statusMessage: 'Sets failed',
+			data: { error: 'An error occurred during sets requesting.' },
 		})
 	}
 
-	// try {
-	// 	const response = await axios.get(endpoint, {
-	// 		headers: {
-	// 			Cookie: `accessToken=${accessToken}`,
-	// 		},
-	// 		httpsAgent: new https.Agent({
-	// 			rejectUnauthorized: false,
-	// 		}),
-	// 		withCredentials: true,
-	// 	})
+	try {
+		const response = await axiosInstance.get(endpoint, {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+				Cookie: `accessToken=${accessToken}`,
+			},
+			withCredentials: true,
+		})
 
-	// 	return response.data
-	// } catch (error) {
-	// 	if (axios.isAxiosError(error) && error.response) {
-	// 		return { error: 'Token validation failed. Redirecting to login.' }
-	// 	}
-	// }
+		return response.data
+	} catch (error) {
+		const fetchError = error as FetchError
+
+		if (axios.isAxiosError(error) && error.response) {
+			throw createError({
+				statusCode: 401,
+				statusMessage: 'Sets failed',
+				data: { error: fetchError.message },
+			})
+		}
+	}
 })

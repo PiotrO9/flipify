@@ -5,5 +5,5 @@ export const axiosInstance = axios.create({
 	httpsAgent: new https.Agent({
 		rejectUnauthorized: false,
 	}),
-	baseURL: process.env.BACKEND_SERVER_ADRES,
+	withCredentials: true,
 })
