@@ -5,9 +5,11 @@
 	--second-font: 'Merriweather', sans-serif;
 
 	--color-primary: #06e;
-	--color-secondary: rgb(43 108 176 / 8%);
+	--color-secondary: #fafafa;
 
-	--gray-300: #9c9c9c;
+	--gray-300: #fafafa;
+	--gray-400: #f5f8fa;
+	--gray-500: #f5f8fa;
 
 	--background-color: #fff;
 	--background-color-negative: #000;

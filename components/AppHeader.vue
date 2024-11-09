@@ -21,7 +21,7 @@
     inset: 0 0 0;
     color: var(--color-primary);
     background-color: var(--background-color);
-    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.12);
+    z-index: 2;
 
     .header-app-name {
         font-weight: 500;
