@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import AddFlipcardSetPreviewCard from '~/components/FlipcardSet/AddFlipcardSetPreviewCard.vue';
 import type { flipcardSetModel } from '~/types/flipcard-models';
 
 definePageMeta({
@@ -15,6 +16,7 @@ const { data: flipcardsSets } = await useFetch<flipcardSetModel[]>("/api/flipcar
         <div v-if="flipcardsSets?.length" class="flipcards-content-container">
             <FlipcardSetPreviewCard v-for="(flipcardSet, index) in flipcardsSets" :key="index"
                 :flipcard-set="flipcardSet" />
+            <AddFlipcardSetPreviewCard />
         </div>
         <div v-else class="flipcards-empty-container">
             <span class='text'>

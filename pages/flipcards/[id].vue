@@ -49,6 +49,7 @@ if (error.value) {
     <div class="flipcards-module module-container">
         <div v-if="flipcards?.length" class="flipcards-content-container">
             <FlipcardPreview v-for="flipcard in flipcards" :key="flipcard.id" :flipcard-data="flipcard" />
+            <FlipcardAddFlipcardPreview />
         </div>
         <div v-else class="flipcards-empty-container">
             <span class='text'>

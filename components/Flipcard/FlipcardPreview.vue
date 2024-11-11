@@ -11,7 +11,7 @@ const { flipcardData } = defineProps<flipcardDataModel>();
 const isFlipped = ref(false);
 
 function handleOptionsClick() {
-    // TODO
+    // Placeholder for options click functionality
 }
 
 function handleFlipcardToggleFlipState() {
@@ -78,6 +78,13 @@ const formatedLastReviewDate = computed(() => formattingService.formatDate(flipc
 <style scoped>
 .flipcard {
     perspective: 1000px;
+    max-width: 100%;
+    /* width: 300px; */
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .flipcard-inner {
@@ -97,6 +104,9 @@ const formatedLastReviewDate = computed(() => formattingService.formatDate(flipc
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .flipcard-back {
