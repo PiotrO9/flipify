@@ -30,3 +30,25 @@
 	border: 2px solid var(--gray-400);
 	background-color: var(--background-color);
 }
+
+.flipcards-empty-container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+	gap: 10px;
+
+	.text {
+		font-size: 1.5rem;
+		font-weight: 700;
+	}
+
+	button {
+		cursor: pointer;
+
+		.icon {
+			height: 32px;
+			width: 32px;
+		}
+	}
+}

@@ -51,10 +51,10 @@ const formatedLastReviewDate = computed(() => formattingService.formatDate(flipc
             <div class="flipcard-side flipcard-back">
                 <div class="flipcard-preview-upper-part" @click="handleFlipcardToggleFlipState">
                     <span class="flipcard-set-name">
-                        {{ flipcardData.nativeWord }}
+                        {{ flipcardData.foreignWord }}
                     </span>
                     <span class="flipcard-description">
-                        {{ flipcardData.nativeWordExample }}
+                        {{ flipcardData.foreignWordExample }}
                     </span>
                 </div>
                 <div class="flipcard-date-wrapper" @click="handleFlipcardToggleFlipState">

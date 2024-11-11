@@ -12,9 +12,21 @@ const { data: flipcardsSets } = await useFetch<flipcardSetModel[]>("/api/flipcar
 
 <template>
     <div class="flipcards-module module-container">
-        <div class="flipcards-content-container">
+        <div v-if="flipcardsSets?.length" class="flipcards-content-container">
             <FlipcardSetPreviewCard v-for="(flipcardSet, index) in flipcardsSets" :key="index"
                 :flipcard-set="flipcardSet" />
+        </div>
+        <div v-else class="flipcards-empty-container">
+            <span class='text'>
+                You have no flipcards sets
+            </span>
+            <div class="add-set-button-wrapper">
+                <button>
+                    <NuxtLink to="/flipcards/add-set">
+                        <Icon name="zondicons:add-outline" class="icon" />
+                    </NuxtLink>
+                </button>
+            </div>
         </div>
     </div>
 </template>

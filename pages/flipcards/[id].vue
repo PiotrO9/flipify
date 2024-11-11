@@ -47,8 +47,20 @@ if (error.value) {
 
 <template>
     <div class="flipcards-module module-container">
-        <div class="flipcards-content-container">
+        <div v-if="flipcards?.length" class="flipcards-content-container">
             <FlipcardPreview v-for="flipcard in flipcards" :key="flipcard.id" :flipcard-data="flipcard" />
+        </div>
+        <div v-else class="flipcards-empty-container">
+            <span class='text'>
+                You have no flipcards in this set
+            </span>
+            <div class="add-set-button-wrapper">
+                <button>
+                    <NuxtLink to="/flipcards/add-flipcard">
+                        <Icon name="zondicons:add-outline" class="icon" />
+                    </NuxtLink>
+                </button>
+            </div>
         </div>
     </div>
 </template>
