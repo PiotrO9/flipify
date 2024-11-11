@@ -140,7 +140,6 @@ function handleSetClick() {
                     cursor: pointer;
                 }
             }
-        }
-    }
+        } }
 }
 </style>

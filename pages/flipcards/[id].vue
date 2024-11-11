@@ -1,5 +1,9 @@
-<script setup lang='ts'>
-import type { flipcardModel } from '~/types/flipcard-models';
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { flipcardModel } from '~/types/flipcard-models'
+import { useRoute, useFetch, navigateTo } from '#app'
+import { useNotificationStore } from '~/stores/notificationStore';
+import { NotificationTypes } from '~/types/enums/notificationTypes';
 
 definePageMeta({
     layout: 'default',
@@ -10,11 +14,39 @@ definePageMeta({
 const route = useRoute()
 const setId = route.params.id as string
 
-const { data: flipcards } = await useFetch<flipcardModel[]>(`/api/flipcards/${setId}`);
+const notificationStore = useNotificationStore()
+
+const flipcards = ref<flipcardModel[] | null>(null)
+
+const { data, error } = await useFetch<flipcardModel[]>(`/api/flipcards/${setId}`)
+
+if (error.value) {
+    if (error.value.statusCode === 404) {
+        notificationStore.setNotification({
+            title: 'Flipcard Set Not Found',
+            description: 'The flipcard set was not found or does not belong to the user.',
+            type: NotificationTypes.ALERT
+        })
+    } else if (error.value.statusCode === 401) {
+        notificationStore.setNotification({
+            title: 'Unauthorized',
+            description: 'You are not authorized to access this flipcard set.',
+            type: NotificationTypes.ALERT
+        })
+    } else {
+        notificationStore.setNotification({
+            title: error.value.statusMessage || 'An Error Occurred',
+            description: error.value.data?.error || 'Something went wrong while fetching the flipcards.',
+            type: NotificationTypes.ALERT
+        })
+    }
+} else if (data.value) {
+    flipcards.value = data.value
+}
 </script>
 
 <template>
     <div>
-        działa
+        dziala
     </div>
 </template>

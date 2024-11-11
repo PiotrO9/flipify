@@ -42,6 +42,17 @@ export default defineEventHandler(async (event) => {
 		const fetchError = error as FetchError
 
 		if (axios.isAxiosError(error) && error.response) {
+			if (error.response.status === 404) {
+				throw createError({
+					statusCode: 404,
+					statusMessage:
+						'Flipcard set not found or does not belong to the user.',
+					data: {
+						error: 'Flipcard set not found or does not belong to the user.',
+					},
+				})
+			}
+
 			throw createError({
 				statusCode: error.response.status,
 				statusMessage: 'Failed to fetch flipcards',
