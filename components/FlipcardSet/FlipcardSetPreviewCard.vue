@@ -8,10 +8,14 @@ const { flipcardSet } = defineProps<{
 function handleSetClick() {
     navigateTo(`/flipcards/${flipcardSet.id}`);
 }
+
+function handleOptionsClick() {
+    // TODO
+}
 </script>
 
 <template>
-    <div class="flipcard-set-card-preview">
+    <div class="flipcard-set-card-preview flipcard-module-card">
         <div class="flipcard-set-card-preview-upper-part" @click="handleSetClick">
             <div class="flipcard-set-card-preview-top-wrapper">
                 <span class="flipcard-set-name">
@@ -51,7 +55,7 @@ function handleSetClick() {
         </div>
         <div class="flipcard-set-card-preview-bottom-part">
             <div class="flipcard-set-card-preview-bottom-wrapper">
-                <div class="options-wrapper">
+                <div class="options-wrapper" @click="handleOptionsClick">
                     <Icon name="tabler:dots" />
                 </div>
             </div>
@@ -61,13 +65,6 @@ function handleSetClick() {
 
 <style scoped>
 .flipcard-set-card-preview {
-    display: flex;
-    flex-direction: column;
-    height: max-content;
-    border-radius: var(--border-radius);
-    border: 2px solid var(--gray-400);
-    background-color: var(--background-color);
-
     .flipcard-set-card-preview-upper-part {
         padding: 12px;
         display: flex;
@@ -140,6 +137,7 @@ function handleSetClick() {
                     cursor: pointer;
                 }
             }
-        } }
+        }
+    }
 }
 </style>

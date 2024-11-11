@@ -1,3 +1,11 @@
 h1 {
 	font-size: 1rem;
 }
+
+.module-container {
+	height: calc(100dvh - 80px);
+	margin-top: 80px;
+	display: flex;
+	width: 100%;
+	max-width: 1680px;
+}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { flipcardModel } from '~/types/flipcard-models'
-import { useRoute, useFetch, navigateTo } from '#app'
+import { useRoute, useFetch } from '#app'
 import { useNotificationStore } from '~/stores/notificationStore';
 import { NotificationTypes } from '~/types/enums/notificationTypes';
 
@@ -46,7 +46,15 @@ if (error.value) {
 </script>
 
 <template>
-    <div>
-        dziala
+    <div class="flipcards-module module-container">
+        <div class="flipcards-content-container">
+            <FlipcardPreview v-for="flipcard in flipcards" :key="flipcard.id" :flipcard-data="flipcard" />
+        </div>
     </div>
 </template>
+
+<style scoped>
+.flipcards-content-container {
+    width: 100%;
+}
+</style>

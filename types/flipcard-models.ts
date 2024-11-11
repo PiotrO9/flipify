@@ -8,14 +8,14 @@ export interface flipcardSetModel {
 }
 
 export interface flipcardModel {
-	Id: string
-	NativeWord: string
-	ForeignWord: string
-	NativeWordExample: string
-	ForeignWordExample: string
-	LastReviewDate: string
-	NextReviewDate: string
-	IntervalDays: number
-	Ef: number
-	AttemptCount: number
+	id: string
+	nativeWord: string
+	foreignWord: string
+	nativeWordExample: string
+	foreignWordExample: string
+	lastReviewDate: string
+	nextReviewDate: string
+	intervalDays: number
+	ef: number
+	attemptCount: number
 }

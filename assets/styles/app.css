@@ -8,4 +8,5 @@
 
 @import url('./elements/button');
 @import url('./elements/auth');
+@import url('./elements/flipcards');
 /* stylelint-enable at-rule-empty-line-before */
