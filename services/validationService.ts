@@ -1,5 +1,3 @@
-// services/validationService.ts
-
 import { CountryCode } from '~/types/enums/postal-code-patterns'
 
 class ValidationService {

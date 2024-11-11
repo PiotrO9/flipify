@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type flipcardSetModel from '~/types/flipcard-sets';
+import type { flipcardSetModel } from '~/types/flipcard-models';
 
 definePageMeta({
     layout: 'default',
